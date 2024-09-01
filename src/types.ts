@@ -20,3 +20,11 @@ export interface Store {
     name: string
     location: string
 }
+
+export interface BookFormat {
+    bookFormatId: number;
+    format: string;
+    isbn: string;
+    price: number;
+    book: Book
+}

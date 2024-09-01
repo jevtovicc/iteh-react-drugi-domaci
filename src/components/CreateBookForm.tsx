@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
-import { Author, Publisher, Store } from '../types';
+import { Author, Publisher } from '../types';
 
 interface FormData {
     title: string;
