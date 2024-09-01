@@ -1,14 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Pocetna from './pages/Pocetna';
-import StranicaKnjige from './pages/StranicaKnjige';
+import AddBookForm from './components/AddBookForm';
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Pocetna />} />
-        <Route path="/knjiga/:id" element={<StranicaKnjige />} />
+        <Route path="/" element={<AddBookForm />} />
       </Routes>
     </Router>
   );
