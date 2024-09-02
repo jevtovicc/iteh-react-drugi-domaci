@@ -14,7 +14,7 @@ const ShoppingCartTable: React.FC = () => {
                     <th>#</th>
                     <th>Proizvod</th>
                     <th>Cena</th>
-                    <th>Kolicina</th>
+                    <th>Količina</th>
                     <th>Ukupno</th>
                 </tr>
             </thead>
@@ -23,7 +23,7 @@ const ShoppingCartTable: React.FC = () => {
                     <tr key={cartItem.bookFormatId}>
                         <td>{i + 1}</td>
                         <td>{cartItem.book.title}</td>
-                        <td>{cartItem.price} RSD</td>
+                        <td>{(cartItem.price).toFixed(2)} RSD</td>
                         <td>
                             <Container fluid>
                                 <Row>
@@ -37,7 +37,7 @@ const ShoppingCartTable: React.FC = () => {
                                 </Row>
                             </Container>
                         </td>
-                        <td>{cartItem.price * cartItem.quantity} RSD</td>
+                        <td>{(cartItem.price * cartItem.quantity).toFixed(2)} RSD</td>
                     </tr>
                 ))}
             </tbody>

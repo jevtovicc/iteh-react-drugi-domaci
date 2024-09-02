@@ -38,10 +38,10 @@ const ShoppingCartPage: React.FC = () => {
                 <Col>
                     <Card>
                         <Card.Body>
-                            <Card.Title>Vasa Porudzbina</Card.Title>
+                            <Card.Title>Vaša Porudžbina</Card.Title>
                             <Card.Text>
                                 Ukupna cena:
-                                {cart.reduce((acc, cartItem) => acc + cartItem.price * cartItem.quantity, 0)} RSD
+                                {(cart.reduce((acc, cartItem) => acc + cartItem.price * cartItem.quantity, 0)).toFixed(2)} RSD
                             </Card.Text>
                             <Button variant="primary" onClick={handleCheckout}>Kupi</Button>
                         </Card.Body>
