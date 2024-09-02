@@ -27,5 +27,6 @@ export interface BookFormat {
     isbn: string;
     price: number;
     available: boolean;
+    coverImagePath: string;
     book: Book;
 }

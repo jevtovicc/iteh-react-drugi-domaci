@@ -12,7 +12,7 @@ const BookCard: React.FC<BookCardProps> = ({ bookFormat }) => {
 
     return (
         <Card style={{ width: '12rem', padding: '20px' }}>
-            <Card.Img variant="top" src="https://delfi.rs/_img/artikli/2019/12/gospodar_prstenova_-_druzina_prstena_mek_povez_vv.jpg" />
+            <Card.Img variant="top" src={`http://localhost:8080/${bookFormat.coverImagePath}`} />
             <Card.Body>
                 <Card.Title>{bookFormat.book.title}</Card.Title>
                 <Card.Text>{bookFormat.book.author.fullName}</Card.Text>
