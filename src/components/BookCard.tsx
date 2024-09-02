@@ -17,11 +17,15 @@ const BookCard: React.FC<BookCardProps> = ({ bookFormat }) => {
                 <Card.Title>{bookFormat.book.title}</Card.Title>
                 <Card.Text>{bookFormat.book.author.fullName}</Card.Text>
                 <Card.Text>{bookFormat.price} RSD</Card.Text>
-                <Button
-                    variant="primary"
-                    onClick={() => addToCart(bookFormat)}>
-                    Dodaj u korpu
-                </Button>
+                {bookFormat.available ?
+                    <Button
+                        variant="primary"
+                        onClick={() => addToCart(bookFormat)}>
+                        Dodaj u korpu
+                    </Button>
+                    :
+                    <Card.Text>Trenutno nije na stanju</Card.Text>
+                }
             </Card.Body>
         </Card>
     )

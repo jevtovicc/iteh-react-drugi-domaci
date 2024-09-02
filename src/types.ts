@@ -26,5 +26,6 @@ export interface BookFormat {
     format: string;
     isbn: string;
     price: number;
-    book: Book
+    available: boolean;
+    book: Book;
 }

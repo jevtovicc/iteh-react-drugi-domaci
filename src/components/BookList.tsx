@@ -11,6 +11,7 @@ const BookList: React.FC = () => {
     useEffect(() => {
         axios.get<BookFormat[]>('http://localhost:8080/api/book-formats')
             .then(response => {
+                console.log(response.data)
                 setBookFormats(response.data)
             })
             .catch(error => console.log('Error fetching book formats', error))
