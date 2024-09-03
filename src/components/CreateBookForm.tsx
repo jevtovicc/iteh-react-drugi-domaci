@@ -4,9 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { Author, Publisher } from '../types';
+import ImageUpload from './ImageUpload';
 
 interface FormData {
     title: string;
@@ -33,6 +35,8 @@ const CreateBookForm: React.FC = () => {
     const [publishers, setPublishers] = useState<SelectOption[]>([]);
     const [selectedPublisher, setSelectedPublisher] = useState<SelectOption | null>(null);
     const [selectedFormat, setSelectedFormat] = useState<SelectOption | null>(null);
+    const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [formData, setFormData] = useState<FormData>({
         title: '',
         description: '',
@@ -67,6 +71,24 @@ const CreateBookForm: React.FC = () => {
 
     }, []);
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result);
+                setImageFile(file);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -88,16 +110,33 @@ const CreateBookForm: React.FC = () => {
         setSelectedFormat(selectedOption);
     };
 
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const data = {
-            ...formData,
-            authorId: selectedAuthor?.value,
-            publisherId: selectedPublisher?.value,
-            format: selectedFormat?.value
-        };
 
-        axios.post('http://localhost:8080/api/books', data) // Adjust the URL as needed
+        if (!imageFile) {
+            // Handle error for missing data
+            alert('Please fill out all fields and upload an image.');
+            return;
+        }
+
+        const dataToSend = new FormData();
+        dataToSend.append('image', imageFile);
+        dataToSend.append('title', formData.title)
+        dataToSend.append('description', formData.description)
+        dataToSend.append('pages', formData.pages.toString())
+        dataToSend.append('price', formData.price.toString())
+        dataToSend.append('isbn', formData.isbn)
+        dataToSend.append('format', selectedFormat!.value.toString())
+        dataToSend.append('authorId', selectedAuthor!.value.toString())
+        dataToSend.append('publisherId', selectedPublisher!.value.toString())
+
+
+        axios.post('http://localhost:8080/api/books', dataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
             .then(response => {
                 alert('Book created successfully');
             })
@@ -216,6 +255,27 @@ const CreateBookForm: React.FC = () => {
                     </Col>
                 </Row>
             </Form.Group>
+
+            <Form.Group controlId="formImage" className="mb-3">
+                <Form.Label>Upload Image</Form.Label>
+                <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+            </Form.Group>
+
+            {selectedImage && (
+                <div className="mt-3">
+                    <h5>Image Preview:</h5>
+                    <Image
+                        src={selectedImage as string}
+                        alt="Selected"
+                        thumbnail
+                        style={{ maxWidth: '150px' }}
+                    />
+                </div>
+            )}
 
             <Container fluid>
                 <Row>

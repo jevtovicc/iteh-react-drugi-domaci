@@ -1,9 +1,9 @@
 import React from 'react';
-import CreateBookForm from '../components/CreateBookForm';
 import Sidebar from '../components/Sidebar';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CreateBookPage: React.FC = () => {
+const AdminPage: React.FC = () => {
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -13,10 +13,9 @@ const CreateBookPage: React.FC = () => {
             >
                 <Row>
                     <Col>
-                        <div className="container mt-4">
-                            <h2>Kreiraj knjigu</h2>
-                            <CreateBookForm />
-                        </div>
+                        {/* Main content goes here */}
+                        <h1>Admin Dashboard</h1>
+                        {/* More content */}
                     </Col>
                 </Row>
             </Container>
@@ -24,4 +23,4 @@ const CreateBookPage: React.FC = () => {
     );
 };
 
-export default CreateBookPage;
+export default AdminPage;

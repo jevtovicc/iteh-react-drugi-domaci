@@ -3,7 +3,7 @@ import CreateBookForm from '../components/CreateBookForm';
 import Sidebar from '../components/Sidebar';
 import { Col, Container, Row } from 'react-bootstrap';
 
-const CreateBookPage: React.FC = () => {
+const AdminViewBooksPage: React.FC = () => {
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -24,4 +24,4 @@ const CreateBookPage: React.FC = () => {
     );
 };
 
-export default CreateBookPage;
+export default AdminViewBooksPage;
