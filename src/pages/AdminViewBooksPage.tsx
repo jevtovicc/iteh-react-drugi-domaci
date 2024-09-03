@@ -2,6 +2,8 @@ import React from 'react';
 import CreateBookForm from '../components/CreateBookForm';
 import Sidebar from '../components/Sidebar';
 import { Col, Container, Row } from 'react-bootstrap';
+import BookList from '../components/BookList';
+import AdminBookList from '../components/AdminBookList';
 
 const AdminViewBooksPage: React.FC = () => {
     return (
@@ -14,8 +16,8 @@ const AdminViewBooksPage: React.FC = () => {
                 <Row>
                     <Col>
                         <div className="container mt-4">
-                            <h2>Kreiraj knjigu</h2>
-                            <CreateBookForm />
+                            <h2>Pregled knjiga</h2>
+                            <AdminBookList />
                         </div>
                     </Col>
                 </Row>

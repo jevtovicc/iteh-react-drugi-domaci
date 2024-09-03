@@ -1,6 +1,7 @@
 export interface Author {
     authorId: number;
     fullName: string;
+    description: string
 }
 
 export interface Publisher {
@@ -29,4 +30,35 @@ export interface BookFormat {
     available: boolean;
     coverImagePath: string;
     book: Book;
+}
+
+export interface Genre {
+    genreId: number;
+    name: string;
+}
+
+export interface Member {
+    memberId: number;
+    fullName: string;
+    email: string
+}
+
+export interface BookCopy {
+    bookCopyId: number;
+    status: string;
+    bookFormat: BookFormat;
+    store: Store;
+}
+
+export interface InvoiceItem {
+    invoiceItemId: number;
+    bookCopy: BookCopy;
+    price: number
+}
+
+export interface Invoice {
+    invoiceId: number;
+    member: Member
+    totalAmount: number;
+    invoiceItems: InvoiceItem[]
 }

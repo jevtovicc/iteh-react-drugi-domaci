@@ -7,8 +7,10 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
-import { Author, Publisher } from '../types';
+import { Author, Publisher, Genre } from '../types';
 import ImageUpload from './ImageUpload';
+import { ListGroup } from 'react-bootstrap';
+import TagModal from './TagModal';
 
 interface FormData {
     title: string;
@@ -28,15 +30,22 @@ const formatOptions: SelectOption[] = [
     { value: 'Mek povez', label: 'Mek povez' }
 ];
 
+
+const availableTags = ['Klasika', 'Trileri', 'Fikcija']
+
 const CreateBookForm: React.FC = () => {
 
     const [authors, setAuthors] = useState<SelectOption[]>([]);
     const [selectedAuthor, setSelectedAuthor] = useState<SelectOption | null>(null);
     const [publishers, setPublishers] = useState<SelectOption[]>([]);
     const [selectedPublisher, setSelectedPublisher] = useState<SelectOption | null>(null);
+    const [genres, setGenres] = useState<Genre[]>([])
     const [selectedFormat, setSelectedFormat] = useState<SelectOption | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
     const [formData, setFormData] = useState<FormData>({
         title: '',
         description: '',
@@ -68,6 +77,16 @@ const CreateBookForm: React.FC = () => {
             .catch(error => {
                 console.error('Error fetching publishers', error);
             });
+
+
+        axios.get<Genre[]>('http://localhost:8080/api/genres') // Adjust the URL as needed
+            .then(response => {
+                setGenres(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching genres', error);
+            });
+
 
     }, []);
 
@@ -108,6 +127,13 @@ const CreateBookForm: React.FC = () => {
 
     const handleFormatChange = (selectedOption: SingleValue<SelectOption>) => {
         setSelectedFormat(selectedOption);
+    };
+
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
+    const handleTagsSelected = (tags: string[]) => {
+        setSelectedGenres(tags);
     };
 
 
@@ -207,6 +233,26 @@ const CreateBookForm: React.FC = () => {
 
                 </Row>
             </Form.Group>
+            <Button variant="primary" onClick={handleShowModal}>
+                Kategorije
+            </Button>
+
+            <TagModal
+                show={showModal}
+                onHide={handleCloseModal}
+                availableTags={genres.map(g => g.name)}
+                checkedTags={selectedGenres}
+                onTagsSelected={handleTagsSelected}
+            />
+
+            <ListGroup className="mt-3 mb-3">
+                {selectedGenres.map((tag, index) => (
+                    <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
+                        {tag}
+                    </ListGroup.Item>
+                ))}
+            </ListGroup>
+
 
             <Form.Group className="mb-3" controlId="formBasicBookDescription">
                 <Form.Label>Opis</Form.Label>
@@ -257,7 +303,7 @@ const CreateBookForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="formImage" className="mb-3">
-                <Form.Label>Upload Image</Form.Label>
+                <Form.Label>Dodaj sliku</Form.Label>
                 <Form.Control
                     type="file"
                     accept="image/*"
@@ -267,7 +313,6 @@ const CreateBookForm: React.FC = () => {
 
             {selectedImage && (
                 <div className="mt-3">
-                    <h5>Image Preview:</h5>
                     <Image
                         src={selectedImage as string}
                         alt="Selected"

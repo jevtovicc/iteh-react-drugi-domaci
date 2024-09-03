@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const Sidebar: React.FC = () => {
 
     const [isBooksOpen, setIsBooksOpen] = useState(false)
+    const [isAuthorsOpen, setIsAuthorsOpen] = useState(false)
 
     return (
         <Navbar
@@ -14,6 +15,7 @@ const Sidebar: React.FC = () => {
             className="sidebar d-flex flex-column p-3"
             style={{ width: '250px', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}
         >
+            <Navbar.Brand as={Link} to="/admin" className='text-secondary ml-4 mr-4'>Shakespeare and Company</Navbar.Brand>
             <Navbar.Collapse id="sidebar">
                 <Nav className="flex-column">
                     {/* Books Management Section */}
@@ -26,7 +28,7 @@ const Sidebar: React.FC = () => {
                                 <Nav.Link as={Link} to='/admin/create-book'>Dodaj knjigu</Nav.Link>
                             </Nav>
                         )}
-                        <Nav.Link href="#authors">Autori</Nav.Link>
+                        <Nav.Link as={Link} to='/admin/view-authors'>Autori</Nav.Link>
                         <Nav.Link href="#categories">Kategorije</Nav.Link>
                     </div>
 
@@ -40,7 +42,7 @@ const Sidebar: React.FC = () => {
                     {/* Order Management Section */}
                     <div>
                         <h5 className='text-secondary'>Order Management</h5>
-                        <Nav.Link href="#orders">Porudžbine</Nav.Link>
+                        <Nav.Link as={Link} to='/admin/orders'>Porudžbine</Nav.Link>
                     </div>
                 </Nav>
             </Navbar.Collapse>
