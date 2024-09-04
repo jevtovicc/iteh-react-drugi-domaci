@@ -15,7 +15,9 @@ const AdminViewAuthorsPage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/authors')
+        axios.get('http://localhost:8080/api/authors', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(response => setAuthors(response.data))
             .catch(e => console.log('Error fetching authors'))
     }, [])

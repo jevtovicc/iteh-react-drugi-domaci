@@ -12,7 +12,9 @@ const AdminViewOrdersPage: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/invoices')
+        axios.get('http://localhost:8080/api/invoices', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(response => setInvoices(response.data))
             .catch(e => console.log('Error fetching invoices'))
     }, [])

@@ -56,7 +56,9 @@ const CreateBookForm: React.FC = () => {
 
     useEffect(() => {
         // Fetch authors from the API
-        axios.get<Author[]>('http://localhost:8080/api/authors') // Adjust the URL as needed
+        axios.get<Author[]>('http://localhost:8080/api/authors', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }) // Adjust the URL as needed
             .then(response => {
                 setAuthors(response.data.map(author => ({
                     value: author.authorId,
@@ -67,7 +69,9 @@ const CreateBookForm: React.FC = () => {
                 console.error('Error fetching authors', error);
             });
 
-        axios.get<Publisher[]>('http://localhost:8080/api/publishers') // Adjust the URL as needed
+        axios.get<Publisher[]>('http://localhost:8080/api/publishers', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }) // Adjust the URL as needed
             .then(response => {
                 setPublishers(response.data.map(publisher => ({
                     value: publisher.publisherId,
@@ -79,7 +83,9 @@ const CreateBookForm: React.FC = () => {
             });
 
 
-        axios.get<Genre[]>('http://localhost:8080/api/genres') // Adjust the URL as needed
+        axios.get<Genre[]>('http://localhost:8080/api/genres', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }) // Adjust the URL as needed
             .then(response => {
                 setGenres(response.data)
             })

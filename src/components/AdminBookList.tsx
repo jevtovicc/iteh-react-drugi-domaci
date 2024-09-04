@@ -10,7 +10,9 @@ const AdminBookList: React.FC = () => {
     const [bookFormats, setBookFormats] = useState<BookFormat[]>([])
 
     useEffect(() => {
-        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats')
+        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(response => {
                 console.log(response.data)
                 setBookFormats(response.data)
