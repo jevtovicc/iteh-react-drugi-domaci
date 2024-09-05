@@ -18,9 +18,7 @@ const AddBookToStore: React.FC = () => {
 
     useEffect(() => {
 
-        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats', {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        }) // Adjust the URL as needed
+        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats') // Adjust the URL as needed
             .then(response => {
                 setBooks(response.data.map(bookFormat => ({
                     value: bookFormat.bookFormatId,

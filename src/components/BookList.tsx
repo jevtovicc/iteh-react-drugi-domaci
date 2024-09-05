@@ -4,20 +4,7 @@ import axios from "axios"
 import { Container, Row, Col } from "react-bootstrap"
 import BookCard from "./BookCard"
 
-const BookList: React.FC = () => {
-
-    const [bookFormats, setBookFormats] = useState<BookFormat[]>([])
-
-    useEffect(() => {
-        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats', {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        })
-            .then(response => {
-                console.log(response.data)
-                setBookFormats(response.data)
-            })
-            .catch(error => console.log('Error fetching book formats', error))
-    }, [])
+const BookList: React.FC<{ bookFormats: BookFormat[] }> = ({ bookFormats }) => {
 
     return (
         <Container className='mt-4'>

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 const Sidebar: React.FC = () => {
 
     const [isBooksOpen, setIsBooksOpen] = useState(false)
-    const [isAuthorsOpen, setIsAuthorsOpen] = useState(false)
 
     return (
         <Navbar
