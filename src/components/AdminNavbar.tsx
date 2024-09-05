@@ -1,9 +1,22 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchComponent from './SearchComponent';
+import { useAuth } from '../context/AuthContext';
 
 const AdminNavbar: React.FC = () => {
+
+    const navigate = useNavigate()
+    const { setIsAuthenticated, setIsAdmin } = useAuth();
+
+
+    const handleLogout = () => {
+        // Clear token from local storage
+        localStorage.clear()
+        setIsAuthenticated(false)
+        setIsAdmin(false)
+        navigate('/');
+    }
 
     const handleSearch = (query: string) => {
         console.log('Search query:', query);
@@ -11,14 +24,21 @@ const AdminNavbar: React.FC = () => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand as={Link} to="/" className='text-secondary'>Shakespeare and Company</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
+        <Navbar bg="dark" variant="dark" expand="lg" className='p-2'>
+            <Container>
+                <div></div>
+
+                <Nav className="mx-auto">
                     <SearchComponent onSearch={handleSearch} />
                 </Nav>
-            </Navbar.Collapse>
+
+                <Nav>
+                    <Nav.Link onClick={handleLogout} style={{ cursor: 'pointer' }} className='text-light'>
+                        Odjavite se
+                    </Nav.Link>
+
+                </Nav>
+            </Container>
         </Navbar>
     );
 };

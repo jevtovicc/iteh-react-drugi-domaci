@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, useRoutes, Navigate } from 'react-router-dom';
 import CreateBookPage from './pages/CreateBookPage';
 import NavBar from './components/NavBar';
@@ -11,6 +11,8 @@ import AdminViewAuthorsPage from './pages/AdminViewAuthorPage';
 import AdminViewOrdersPage from './pages/AdminViewOrdersPage';
 import { jwtDecode } from 'jwt-decode';
 import GenrePage from './pages/GenrePage';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import AdminNavbar from './components/AdminNavbar';
 
 interface DecodedToken {
   sub: string[];
@@ -33,7 +35,7 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
 };
 
 const App: React.FC = () => {
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -42,16 +44,19 @@ const App: React.FC = () => {
         const decodedToken = jwtDecode<DecodedToken>(token);
         const roles = decodedToken.roles || [];
         setIsAdmin(roles.includes('ROLE_ADMIN'));
+        setIsAuthenticated(true);
       } catch (error) {
         console.error('Error decoding token:', error);
         setIsAdmin(false);
+        setIsAuthenticated(true);
       }
     } else {
       setIsAdmin(false);
+      setIsAuthenticated(false);
     }
-  }, []);
+  }, [setIsAdmin, setIsAuthenticated]);
 
-  if (isAdmin === null) {
+  if (isAdmin === null || isAuthenticated === null) {
     // Show a loading spinner or similar while fetching role
     return <div>Loading...</div>;
   }
@@ -60,7 +65,7 @@ const App: React.FC = () => {
     <Router>
       <CartProvider>
         <div>
-          <NavBar />
+          {isAdmin ? <AdminNavbar /> : <NavBar />}
           <AppRoutes isAdmin={isAdmin} />
         </div>
       </CartProvider>

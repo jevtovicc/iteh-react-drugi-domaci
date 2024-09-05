@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Card } from 'react-bootstrap';
 import axios from 'axios';
 import { Book, BookFormat, Genre } from '../types';
@@ -10,6 +10,7 @@ const GenrePage: React.FC = () => {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [bookFormats, setBookFormats] = useState<BookFormat[]>([]);
     const [selectedGenreID, setSelectedGenreID] = useState<string | null>(genreId || null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch all genres
@@ -37,18 +38,23 @@ const GenrePage: React.FC = () => {
         }
     }, [genreId]);
 
+    const handleGenreClick = (id: string) => {
+        setSelectedGenreID(id);  // Update selectedGenreID state
+        navigate(`/books/genres/${id}`);  // Navigate to the new route
+    };
+
     return (
         <Container fluid>
             <Row>
                 <Col md={3} className="p-3">
-                    <h2>Kategorije</h2>
+                    <h2 className='mb-4'>Kategorije</h2>
                     <ListGroup>
                         {genres.map((genre) => (
                             <ListGroup.Item
                                 key={genre.genreId}
                                 action
                                 active={genre.genreId.toString() === selectedGenreID}
-                                onClick={() => setSelectedGenreID(genre.genreId.toString())}
+                                onClick={() => handleGenreClick(genre.genreId.toString())}
                             >
                                 {genre.name}
                             </ListGroup.Item>
@@ -56,7 +62,7 @@ const GenrePage: React.FC = () => {
                     </ListGroup>
                 </Col>
                 <Col md={9} className="p-3">
-                    <h2>Knjige</h2>
+                    <h2 className='ml-3'>Knjige</h2>
                     <BookList bookFormats={bookFormats} />
                 </Col>
             </Row>

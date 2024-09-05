@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
 import { Modal, Button, Form, ListGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginModalProps {
     show: boolean;
@@ -20,6 +21,7 @@ interface DecodedToken {
 
 const LoginModal: React.FC<LoginModalProps> = ({ show, onHide }) => {
 
+    const { setIsAuthenticated, setIsAdmin } = useAuth()
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -42,15 +44,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide }) => {
             .then(response => {
                 const { token } = response.data
                 localStorage.setItem('token', token);
+                setIsAuthenticated(true)
 
                 const decodedToken = jwtDecode<DecodedToken>(token);
                 const roles = decodedToken.roles || [];
 
                 onHide()
                 if (roles.includes('ROLE_ADMIN')) {
+                    setIsAdmin(true)
                     navigate('/admin');
                 } else if (roles.includes('ROLE_CUSTOMER')) {
-                    navigate('/');
+                    setIsAdmin(false)
                 } else {
                     navigate('/'); // Fallback or default page
                 }
