@@ -13,6 +13,7 @@ import { jwtDecode } from 'jwt-decode';
 import GenrePage from './pages/GenrePage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import AdminNavbar from './components/AdminNavbar';
+import SearchResultsPage from './pages/SearchResultsPage';
 
 interface DecodedToken {
   sub: string[];
@@ -28,6 +29,7 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     { path: "/admin", element: isAdmin ? <AdminPage /> : <Navigate to="/" /> },
     { path: "/shopping-cart", element: <ShoppingCartPage /> },
     { path: "/books/genres/:genreId", element: <GenrePage /> },
+    { path: "/books/search", element: <SearchResultsPage /> },
     { path: "/", element: <CustomerHomePage /> },
   ];
 

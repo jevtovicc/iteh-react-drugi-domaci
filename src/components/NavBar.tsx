@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
+import SearchComponent from './SearchComponent';
 
 const NavBar: React.FC = () => {
 
@@ -50,13 +51,14 @@ const NavBar: React.FC = () => {
                 <Nav>
                     <Nav.Link as={Link} to="/">Knjige</Nav.Link>
 
-                    <NavDropdown title="Kategorije" id="basic-nav-dropdown">
+                    <NavDropdown title="Kategorije" id="basic-nav-dropdown" className='mr-4'>
                         {genres.map((genre) => (
                             <NavDropdown.Item key={genre.genreId} as={Link} to={`/books/genres/${genre.genreId}`}>
                                 {genre.name}
                             </NavDropdown.Item>
                         ))}
                     </NavDropdown>
+                    <SearchComponent onSearch={() => console.log('Searching')} />
                 </Nav>
 
                 <Nav>
