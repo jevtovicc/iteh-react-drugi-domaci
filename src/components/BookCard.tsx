@@ -16,7 +16,8 @@ const BookCard: React.FC<BookCardProps> = ({ bookFormat }) => {
     const [isHovered, setIsHovered] = useState(false); // Track hover state for the author name
     const navigate = useNavigate();
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent click from triggering the card's onClick
         addToCart(bookFormat);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);

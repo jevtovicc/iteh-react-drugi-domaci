@@ -119,17 +119,23 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
                 {/* Price and Add to Cart button on the right */}
                 <Col md={2} className="d-flex justify-content-center align-items-center p-3 rounded" style={{ height: '400px', backgroundColor: '#f8f9fa' }}>
                     <div className="text-center">
-                        <h5 className='text-secondary'>Cena:</h5>
+                        <h5 className=''>Cena:</h5>
                         <h5 className="text-danger mb-3"><strong>{bookFormat.price.toFixed(2)} RSD</strong></h5>
-                        <Button
-                            variant={disableAddToCart ? 'secondary' : 'outline-primary'}
-                            onClick={handleAddToCart}
-                            disabled={disableAddToCart} // Disable the button
-                            className={disableAddToCart ? 'disabled' : ''}
-                        >
-                            {disableAddToCart ? 'Dodato' : 'Dodaj u korpu'} <FaShoppingCart />
-                        </Button>
-                        <p className='mt-3 text-primary' style={{ cursor: 'pointer' }}>Proveri dostupnost po knjižarama</p>
+                        {bookFormat.available ?
+                            <>
+                                <Button
+                                    variant={disableAddToCart ? 'secondary' : 'outline-primary'}
+                                    onClick={handleAddToCart}
+                                    disabled={disableAddToCart} // Disable the button
+                                    className={disableAddToCart ? 'disabled' : ''}
+                                >
+                                    {disableAddToCart ? 'Dodato' : 'Dodaj u korpu'} <FaShoppingCart />
+                                </Button>
+                                <p className='mt-3 text-primary' style={{ cursor: 'pointer' }}>Proveri dostupnost po knjižarama</p>
+                            </>
+                            :
+                            <p className='bg-warning p-2'><strong>Trenutno nije na stanju</strong></p>
+                        }
                     </div>
                 </Col>
             </Row>
