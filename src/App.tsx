@@ -14,6 +14,8 @@ import GenrePage from './pages/GenrePage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import AdminNavbar from './components/AdminNavbar';
 import SearchResultsPage from './pages/SearchResultsPage';
+import BookDetailsPage from './pages/BookDetailsPage';
+import AuthorPage from './pages/AuthorPage';
 
 interface DecodedToken {
   sub: string[];
@@ -29,7 +31,9 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     { path: "/admin", element: isAdmin ? <AdminPage /> : <Navigate to="/" /> },
     { path: "/shopping-cart", element: <ShoppingCartPage /> },
     { path: "/books/genres/:genreId", element: <GenrePage /> },
+    { path: "/books/view-book/:bookId", element: <BookDetailsPage /> },
     { path: "/books/search", element: <SearchResultsPage /> },
+    { path: "/authors/:authorId/books", element: <AuthorPage /> },
     { path: "/", element: <CustomerHomePage /> },
   ];
 

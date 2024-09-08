@@ -14,6 +14,8 @@ export interface Book {
     title: string;
     description: string;
     author: Author;
+    publisher: Publisher;
+    genres: Genre[]
 }
 
 export interface Store {
@@ -30,6 +32,7 @@ export interface BookFormat {
     available: boolean;
     coverImagePath: string;
     book: Book;
+    pages: number;
 }
 
 export interface Genre {

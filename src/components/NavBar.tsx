@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import LoginModal from './LoginModal';
 import { Genre } from '../types';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import SearchComponent from './SearchComponent';
+import ReusableModal from './ReusableModal';
+import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
 
 const NavBar: React.FC = () => {
 
     const { cart } = useCart()
     const [genres, setGenres] = useState<Genre[]>([])
     const [showLoginModal, setShowLoginModal] = useState(false)
+    const [showRegistrationModal, setShowRegistrationModal] = useState(false)
     const navigate = useNavigate()
     const { isAuthenticated, setIsAuthenticated } = useAuth();
 
@@ -93,10 +96,27 @@ const NavBar: React.FC = () => {
                             <Nav.Link onClick={() => setShowLoginModal(true)} style={{ cursor: 'pointer' }}>
                                 Prijavite se
                             </Nav.Link>
-                            <LoginModal show={showLoginModal} onHide={() => setShowLoginModal(false)} />
-                            <Nav.Link style={{ cursor: 'pointer' }}>
+
+                            <ReusableModal
+                                show={showLoginModal}
+                                handleClose={() => setShowLoginModal(false)}
+                                title='Prijava'
+                                body={<LoginForm />}
+                            />
+
+
+                            <Nav.Link onClick={() => setShowRegistrationModal(true)} style={{ cursor: 'pointer' }}>
                                 Registrujte se
                             </Nav.Link>
+
+
+                            <ReusableModal
+                                show={showRegistrationModal}
+                                handleClose={() => setShowRegistrationModal(false)}
+                                title='Registracija'
+                                body={<RegistrationForm />}
+                            />
+
                             <Nav.Link as={Link} to='shopping-cart'>
                                 <div style={{ position: 'relative' }}>
                                     <FaShoppingCart size={24} />

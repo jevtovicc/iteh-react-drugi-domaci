@@ -83,9 +83,7 @@ const CreateBookForm: React.FC = () => {
             });
 
 
-        axios.get<Genre[]>('http://localhost:8080/api/genres', {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        }) // Adjust the URL as needed
+        axios.get<Genre[]>('http://localhost:8080/api/genres') // Adjust the URL as needed
             .then(response => {
                 setGenres(response.data)
             })

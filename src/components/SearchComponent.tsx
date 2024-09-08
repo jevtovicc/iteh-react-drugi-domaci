@@ -46,6 +46,12 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
         setSearchTerm('')
     }
 
+    const handleViewBook = (bookFormatId: number) => {
+        setShowResults(false)
+        navigate(`/books/view-book/${bookFormatId}`)
+        setSearchTerm('')
+    }
+
     return (
         <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
             <Form style={{ display: 'flex', justifyContent: 'center' }}>
@@ -109,7 +115,9 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                 >
                     {searchResults.length > 0 ? (
                         searchResults.map((result) => (
-                            <Dropdown.Item key={result.bookFormatId} href={`/books/${result.bookFormatId}`}
+                            <Dropdown.Item
+                                key={result.bookFormatId}
+                                onClick={() => handleViewBook(result.bookFormatId)}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
