@@ -3,19 +3,19 @@ import Sidebar from '../components/Sidebar';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AdminAuthorsTable from '../components/AdminAuthorsTable';
 import axios from 'axios';
-import { Invoice } from '../types';
+import { Order } from '../types';
 import CreateAuthorModal from '../components/CreateAuthorModal';
 import AdminOrdersTable from '../components/AdminOrdersTable';
 
 const AdminViewOrdersPage: React.FC = () => {
 
-    const [invoices, setInvoices] = useState<Invoice[]>([])
+    const [orders, setOrders] = useState<Order[]>([])
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/invoices', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
-            .then(response => setInvoices(response.data))
+            .then(response => setOrders(response.data))
             .catch(e => console.log('Error fetching invoices'))
     }, [])
 
@@ -32,7 +32,7 @@ const AdminViewOrdersPage: React.FC = () => {
                             <Row>
                                 <Col>
                                     <h2>Pregled racuna</h2>
-                                    <AdminOrdersTable invoices={invoices} />
+                                    <AdminOrdersTable orders={orders} />
                                 </Col>
                             </Row>
                         </div>

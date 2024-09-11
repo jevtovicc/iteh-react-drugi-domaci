@@ -1,67 +1,58 @@
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
 export interface Author {
-    authorId: number;
-    fullName: string;
-    description: string
+    id: number;
+    name: string;
+    bio: string
 }
 
 export interface Publisher {
-    publisherId: number;
-    publisherName: string
-}
-
-export interface Book {
-    bookId: number;
-    title: string;
-    description: string;
-    author: Author;
-    publisher: Publisher;
-    genres: Genre[]
+    id: number;
+    name: string
 }
 
 export interface Store {
-    storeId: number,
+    id: number,
     name: string
     location: string
 }
 
-export interface BookFormat {
-    bookFormatId: number;
-    format: string;
-    isbn: string;
+export interface Book {
+    id: number;
+    title: string;
+    description: string;
     price: number;
+    cover_image_path: string;
+    page_count: number;
+    format: string;
+    author: Author;
+    publisher: Publisher;
+    genres: Genre[];
+    stores: Store[],
     available: boolean;
-    coverImagePath: string;
-    book: Book;
-    pages: number;
+    isbn: string;
 }
 
 export interface Genre {
-    genreId: number;
+    id: number;
     name: string;
 }
 
-export interface Member {
-    memberId: number;
-    fullName: string;
-    email: string
-}
-
-export interface BookCopy {
-    bookCopyId: number;
+export interface Order {
+    id: number;
     status: string;
-    bookFormat: BookFormat;
-    store: Store;
+    total_amount: number;
+    user: User
 }
 
-export interface InvoiceItem {
-    invoiceItemId: number;
-    bookCopy: BookCopy;
-    price: number
-}
-
-export interface Invoice {
-    invoiceId: number;
-    member: Member
-    totalAmount: number;
-    invoiceItems: InvoiceItem[]
+export interface OrderItem {
+    id: number;
+    quantity: number;
+    price: number;
+    book: Book;
+    order: Order
 }

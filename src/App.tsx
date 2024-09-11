@@ -30,7 +30,7 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     { path: "/admin/view-orders", element: isAdmin ? <AdminViewOrdersPage /> : <Navigate to='/' /> },
     { path: "/admin", element: isAdmin ? <AdminPage /> : <Navigate to="/" /> },
     { path: "/shopping-cart", element: <ShoppingCartPage /> },
-    { path: "/books/genres/:genreId", element: <GenrePage /> },
+    { path: "/books/genres", element: <GenrePage /> },
     { path: "/books/view-book/:bookId", element: <BookDetailsPage /> },
     { path: "/books/search", element: <SearchResultsPage /> },
     { path: "/authors/:authorId/books", element: <AuthorPage /> },

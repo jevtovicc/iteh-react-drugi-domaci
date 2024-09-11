@@ -30,7 +30,7 @@ const NavBar: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        axios.get<Genre[]>('http://localhost:8080/api/genres')
+        axios.get<Genre[]>('http://127.0.0.1:8000/api/genres')
             .then(response => setGenres(response.data))
             .catch(e => console.log(e));
 
@@ -63,7 +63,7 @@ const NavBar: React.FC = () => {
                         <Nav.Link as={Link} to="/">Knjige</Nav.Link>
                         <NavDropdown title="Kategorije" id="basic-nav-dropdown" className='mr-4'>
                             {genres.map((genre) => (
-                                <NavDropdown.Item key={genre.genreId} as={Link} to={`/books/genres/${genre.genreId}`}>
+                                <NavDropdown.Item key={genre.id} as={Link} to={`/books/genres?genreId=${genre.id}`}>
                                     {genre.name}
                                 </NavDropdown.Item>
                             ))}

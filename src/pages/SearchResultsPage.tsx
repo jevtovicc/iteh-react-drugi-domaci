@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { BookFormat } from '../types';
+import { Book } from '../types';
 import BookList from '../components/BookList';
 
 const SearchResultsPage: React.FC = () => {
-    const [searchResults, setSearchResults] = useState<BookFormat[]>([]);
+    const [searchResults, setSearchResults] = useState<Book[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const location = useLocation();
 
@@ -16,7 +16,7 @@ const SearchResultsPage: React.FC = () => {
 
         if (query) {
             setSearchTerm(query);
-            axios.get<BookFormat[]>(`http://localhost:8080/api/book-formats/search?query=${query}`)
+            axios.get<Book[]>(`http://localhost:8080/api/book-formats/search?query=${query}`)
                 .then(response => setSearchResults(response.data))
                 .catch(error => console.error(error));
         }
@@ -25,7 +25,7 @@ const SearchResultsPage: React.FC = () => {
     return (
         <div className='text-center mt-4'>
             <h4 className='text-secondary'>{searchResults.length} rezultata pretrage za: "{searchTerm}"</h4>
-            <BookList bookFormats={searchResults} />
+            <BookList books={searchResults} />
         </div>
     );
 };

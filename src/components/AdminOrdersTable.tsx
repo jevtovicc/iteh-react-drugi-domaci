@@ -1,21 +1,21 @@
 import { Button, Col, Container, Row, Table } from "react-bootstrap"
-import { Invoice } from "../types"
+import { Order } from "../types"
 import { useState } from "react"
-import InvoiceItemsModalTable from "./InvoiceItemsModalTable"
+import OrderItemsModalTable from "./OrderItemsModalTable"
 
 interface AdminOrdersTableProps {
-    invoices: Invoice[]
+    orders: Order[]
 }
 
-const AdminOrdersTable: React.FC<AdminOrdersTableProps> = ({ invoices }) => {
+const AdminOrdersTable: React.FC<AdminOrdersTableProps> = ({ orders }) => {
 
-    const [showInvoiceDetailsModal, setShowInvoiceDetailsModal] = useState(false)
-    const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
+    const [showInvoiceDetailsModal, setShowOrderDetailsModal] = useState(false)
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
 
 
-    const handleShowInvoiceDetailsModal = (invoice: Invoice) => {
-        setSelectedInvoice(invoice)
-        setShowInvoiceDetailsModal(true)
+    const handleShowOrderDetailsModal = (order: Order) => {
+        setSelectedOrder(order)
+        setShowOrderDetailsModal(true)
     }
 
     return (
@@ -31,14 +31,13 @@ const AdminOrdersTable: React.FC<AdminOrdersTableProps> = ({ invoices }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {invoices.map((invoice, i) => (
-                        <tr key={invoice.invoiceId}>
+                    {orders.map((order, i) => (
+                        <tr key={order.id}>
                             <td>{i + 1}</td>
-                            <td>{invoice.invoiceId}</td>
-                            <td>{invoice.member.fullName}</td>
-                            <td>{invoice.totalAmount.toFixed(2)} RSD</td>
+                            <td>{order.user.name}</td>
+                            <td>{order.total_amount.toFixed(2)} RSD</td>
                             <td>
-                                <Button onClick={() => handleShowInvoiceDetailsModal(invoice)}>
+                                <Button onClick={() => handleShowOrderDetailsModal(order)}>
                                     Vidi detalje
                                 </Button>
                             </td>
@@ -46,10 +45,10 @@ const AdminOrdersTable: React.FC<AdminOrdersTableProps> = ({ invoices }) => {
                     ))}
                 </tbody>
             </Table>
-            <InvoiceItemsModalTable
+            <OrderItemsModalTable
                 show={showInvoiceDetailsModal}
-                onHide={() => setShowInvoiceDetailsModal(false)}
-                invoice={selectedInvoice} />
+                onHide={() => setShowOrderDetailsModal(false)}
+                order={selectedOrder} />
         </>
     )
 }

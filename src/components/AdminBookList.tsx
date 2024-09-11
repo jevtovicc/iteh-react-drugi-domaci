@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Book, BookFormat } from "../types"
+import { Book } from "../types"
 import axios from "axios"
 import { Container, Row, Col } from "react-bootstrap"
 import BookCard from "./BookCard"
@@ -7,13 +7,13 @@ import AdminBookCard from "./AdminBookCard"
 
 const AdminBookList: React.FC = () => {
 
-    const [bookFormats, setBookFormats] = useState<BookFormat[]>([])
+    const [books, setBooks] = useState<Book[]>([])
 
     useEffect(() => {
-        axios.get<BookFormat[]>('http://localhost:8080/api/book-formats')
+        axios.get<Book[]>('http://localhost:8080/api/book-formats')
             .then(response => {
                 console.log(response.data)
-                setBookFormats(response.data)
+                setBooks(response.data)
             })
             .catch(error => console.log('Error fetching book formats', error))
     }, [])
@@ -22,9 +22,9 @@ const AdminBookList: React.FC = () => {
         <Container className='mt-4'>
             {Array.from({ length: 4 }, (_, index) => (
                 <Row key={index} className="mb-4">
-                    {bookFormats.slice(4 * index, 4 * index + 4).map(bf => (
-                        <Col key={bf.bookFormatId}>
-                            <AdminBookCard bookFormat={bf} />
+                    {books.slice(4 * index, 4 * index + 4).map(book => (
+                        <Col key={book.id}>
+                            <AdminBookCard book={book} />
                         </Col>
                     )
                     )}

@@ -1,17 +1,17 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { BookFormat } from '../types';
+import { Book } from '../types';
 
 
-interface CartItem extends BookFormat {
+interface CartItem extends Book {
     quantity: number;
 }
 
 interface CartContextType {
     cart: CartItem[];
-    addToCart: (bookFormat: BookFormat) => void;
-    removeFromCart: (bookFormatId: number) => void;
-    increaseQuantity: (bookFormatId: number) => void;
-    decreaseQuantity: (bookFormatId: number) => void;
+    addToCart: (book: Book) => void;
+    removeFromCart: (bookId: number) => void;
+    increaseQuantity: (bookId: number) => void;
+    decreaseQuantity: (bookId: number) => void;
     clearCart: () => void;
 }
 
@@ -28,39 +28,39 @@ export const useCart = () => {
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
 
-    const addToCart = (bookFormat: BookFormat) => {
+    const addToCart = (book: Book) => {
         setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.bookFormatId === bookFormat.bookFormatId);
+            const existingItem = prevCart.find(item => item.id === book.id);
             if (existingItem) {
                 return prevCart.map(item =>
-                    item.bookFormatId === bookFormat.bookFormatId ? { ...item, quantity: item.quantity + 1 } : item
+                    item.id === book.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
             }
-            return [...prevCart, { ...bookFormat, quantity: 1 }];
+            return [...prevCart, { ...book, quantity: 1 }];
         });
     };
 
-    const increaseQuantity = (bookFormatId: number) => {
+    const increaseQuantity = (bookId: number) => {
         setCart(prevCart => (
-            prevCart.map(item => item.bookFormatId === bookFormatId ? { ...item, quantity: item.quantity + 1 } : item))
+            prevCart.map(item => item.id === bookId ? { ...item, quantity: item.quantity + 1 } : item))
         )
     }
 
-    const decreaseQuantity = (bookFormatId: number) => {
-        const itemToDecrease = cart.find(item => item.bookFormatId === bookFormatId)
+    const decreaseQuantity = (bookId: number) => {
+        const itemToDecrease = cart.find(item => item.id === bookId)
         if (itemToDecrease) {
             if (itemToDecrease.quantity === 1) {
-                removeFromCart(bookFormatId)
+                removeFromCart(bookId)
             } else {
                 setCart(prevCart => (
-                    prevCart.map(item => item.bookFormatId === bookFormatId ? { ...item, quantity: item.quantity - 1 } : item))
+                    prevCart.map(item => item.id === bookId ? { ...item, quantity: item.quantity - 1 } : item))
                 )
             }
         }
     }
 
-    const removeFromCart = (bookFormatId: number) => {
-        setCart(prevCart => prevCart.filter(item => item.bookFormatId !== bookFormatId));
+    const removeFromCart = (bookId: number) => {
+        setCart(prevCart => prevCart.filter(item => item.id !== bookId));
     };
 
     const clearCart = () => {

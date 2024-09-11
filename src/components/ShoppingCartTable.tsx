@@ -21,26 +21,26 @@ const ShoppingCartTable: React.FC = () => {
             </thead>
             <tbody>
                 {cart.map((cartItem, i) => (
-                    <tr key={cartItem.bookFormatId}>
+                    <tr key={cartItem.id}>
                         <td>{i + 1}</td>
                         <td>
                             <Container>
                                 <Row className='align-items-start'>
                                     <Col xs='auto'>
-                                        <Image style={{ width: '100px', height: '100px' }} src={`http://localhost:8080/${cartItem.coverImagePath}`} />
+                                        <Image style={{ width: '100px', height: '100px' }} src={`http://127.0.0.1:8000/${cartItem.cover_image_path}`} />
                                     </Col>
                                     <Col>
                                         <p className='font-weight-bold'>
-                                            {cartItem.book.title}
+                                            {cartItem.title}
                                         </p>
                                         <p>
-                                            {cartItem.book.author.fullName}
+                                            {cartItem.author.name}
                                         </p>
                                     </Col>
                                 </Row>
                             </Container>
                         </td>
-                        <td>{(cartItem.price).toFixed(2)} RSD</td>
+                        <td>{(cartItem.price)} RSD</td>
                         <td>
                             <Container className='d-flex align-items-center justify-content-center'>
                                 <Row>
@@ -49,15 +49,15 @@ const ShoppingCartTable: React.FC = () => {
                                     </Col>
                                     <Row>
                                         <Col>
-                                            <Button size='sm' className='mr-2' onClick={() => increaseQuantity(cartItem.bookFormatId)}>+</Button>
-                                            <Button size='sm' onClick={() => decreaseQuantity(cartItem.bookFormatId)}>-</Button>
+                                            <Button size='sm' className='mr-2' onClick={() => increaseQuantity(cartItem.id)}>+</Button>
+                                            <Button size='sm' onClick={() => decreaseQuantity(cartItem.id)}>-</Button>
                                         </Col>
                                     </Row>
                                 </Row>
                             </Container>
                         </td>
                         <td>{(cartItem.price * cartItem.quantity).toFixed(2)} RSD</td>
-                        <td><Button onClick={() => removeFromCart(cartItem.bookFormatId)}>Izbaci</Button></td>
+                        <td><Button onClick={() => removeFromCart(cartItem.id)}>Izbaci</Button></td>
                     </tr>
                 ))}
             </tbody>

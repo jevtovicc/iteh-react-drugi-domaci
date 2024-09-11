@@ -18,12 +18,12 @@ const AdminAuthorsTable: React.FC<AdminAuthorsTableProps> = ({ authors }) => {
             </thead>
             <tbody>
                 {authors.map((a, i) => (
-                    <tr key={a.authorId}>
+                    <tr key={a.id}>
                         <td>{i + 1}</td>
-                        <td>{a.authorId}</td>
-                        <td>{a.fullName}</td>
+                        <td>{a.id}</td>
+                        <td>{a.name}</td>
                         <td>
-                            {a.description}
+                            {a.bio}
                         </td>
                     </tr>
                 ))}

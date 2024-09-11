@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Image, Tabs, Tab, Button, ToastContainer, Toast } from 'react-bootstrap';
-import { BookFormat } from '../types';
+import { Book } from '../types';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface BookDetailsProps {
-    bookFormat: BookFormat | null;
+    book: Book | null;
 }
 
-const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
+const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     const { addToCart } = useCart();
     const [activeTab, setActiveTab] = useState('description');
     const [showToast, setShowToast] = useState(false);
@@ -17,12 +17,12 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
     const [isHovered, setIsHovered] = useState(false); // Track hover state for author name
     const navigate = useNavigate()
 
-    if (!bookFormat) {
+    if (!book) {
         return <p>Loading...</p>;
     }
 
     const handleAddToCart = () => {
-        addToCart(bookFormat);
+        addToCart(book);
         setShowToast(true);
         setDisableAddToCart(true); // Disable button
 
@@ -47,7 +47,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
             <Row>
                 {/* Image on the left */}
                 <Col md={4}>
-                    <Image src={`http://localhost:8080/${bookFormat.coverImagePath}`} alt={bookFormat.book.title} fluid />
+                    <Image src={`http://127.0.0.1:8000/${book.cover_image_path}`} alt={book.title} fluid />
                 </Col>
 
                 {/* Book details in the middle */}
@@ -55,17 +55,17 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
                     <div className="mb-3">
                         {/* Genres above the title */}
                         <div>
-                            {bookFormat.book.genres.map((genre) => (
+                            {book.genres.map((genre) => (
                                 <Link
-                                    key={genre.genreId}
-                                    to={`/books/genres/${genre.genreId}`}
+                                    key={genre.id}
+                                    to={`/books/genres/${genre.id}`}
                                     style={{ marginRight: '10px', textDecoration: 'none', color: '#007bff' }}
                                 >
                                     {genre.name}
                                 </Link>
                             ))}
                         </div>
-                        <h2>{bookFormat.book.title}</h2>
+                        <h2>{book.title}</h2>
                         <h5
                             className="text-muted"
                             style={{
@@ -73,11 +73,11 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
                                 color: isHovered ? '#007bff' : 'inherit', // Blue when hovered
                                 textDecoration: isHovered ? 'underline' : 'none' // Underline on hover
                             }}
-                            onClick={() => navigate(`/authors/${bookFormat.book.author.authorId}/books`)}
+                            onClick={() => navigate(`/authors/${book.author.id}/books`)}
                             onMouseEnter={() => setIsHovered(true)} // Handle hover state
                             onMouseLeave={() => setIsHovered(false)} // Handle hover state
                         >
-                            {bookFormat.book.author.fullName}
+                            {book.author.name}
                         </h5>
                     </div>
 
@@ -90,25 +90,25 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
                             className="mb-3"
                         >
                             <Tab eventKey="description" title="Opis">
-                                <p>{bookFormat.book.description}</p>
+                                <p>{book.description}</p>
                             </Tab>
                             <Tab eventKey="declaration" title="Deklaracija">
                                 <div style={{ padding: '10px' }}>
                                     <Row style={rowStyle}>
                                         <Col xs={6}><strong>ISBN:</strong></Col>
-                                        <Col xs={6} className="text-end">{bookFormat.isbn}</Col>
+                                        <Col xs={6} className="text-end">{book.isbn}</Col>
                                     </Row>
                                     <Row style={rowStyle}>
                                         <Col xs={6}><strong>Izdavac:</strong></Col>
-                                        <Col xs={6} className="text-end">{bookFormat.book.publisher.publisherName}</Col>
+                                        <Col xs={6} className="text-end">{book.publisher.name}</Col>
                                     </Row>
                                     <Row style={rowStyle}>
                                         <Col xs={6}><strong>Broj stranica:</strong></Col>
-                                        <Col xs={6} className="text-end">{bookFormat.pages}</Col>
+                                        <Col xs={6} className="text-end">{book.page_count}</Col>
                                     </Row>
                                     <Row style={lastRowStyle}>
                                         <Col xs={6}><strong>Format:</strong></Col>
-                                        <Col xs={6} className="text-end">{bookFormat.format}</Col>
+                                        <Col xs={6} className="text-end">{book.format}</Col>
                                     </Row>
                                 </div>
                             </Tab>
@@ -120,8 +120,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({ bookFormat }) => {
                 <Col md={2} className="d-flex justify-content-center align-items-center p-3 rounded" style={{ height: '400px', backgroundColor: '#f8f9fa' }}>
                     <div className="text-center">
                         <h5 className=''>Cena:</h5>
-                        <h5 className="text-danger mb-3"><strong>{bookFormat.price.toFixed(2)} RSD</strong></h5>
-                        {bookFormat.available ?
+                        <h5 className="text-danger mb-3"><strong>{book.price} RSD</strong></h5>
+                        {book.available ?
                             <>
                                 <Button
                                     variant={disableAddToCart ? 'secondary' : 'outline-primary'}

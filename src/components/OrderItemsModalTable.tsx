@@ -1,22 +1,22 @@
 import { Button, Col, Container, Modal, Row, Table } from "react-bootstrap"
-import { Invoice } from "../types"
+import { Order } from "../types"
 
-interface InvoiceItemsModalTableProps {
-    invoice: Invoice | null,
+interface OrderItemsModalTableProps {
+    order: Order | null,
     show: boolean;
     onHide: () => void
 }
 
-const InvoiceItemsModalTable: React.FC<InvoiceItemsModalTableProps> = ({ invoice, show, onHide }) => {
+const OrderItemsModalTable: React.FC<OrderItemsModalTableProps> = ({ order, show, onHide }) => {
     return (
         <Modal show={show} onHide={onHide} size='xl'>
             <Modal.Header closeButton>
                 <Modal.Title>Detalji Racuna</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4>Kupac: {invoice?.member.fullName}</h4>
-                <h4 className="mb-4">Ukupan iznos: {invoice?.totalAmount.toFixed(2)} RSD</h4>
-                <Container style={{ height: invoice && invoice?.invoiceItems.length >= 3 ? '500px' : '300px', width: '800px', overflowY: 'auto' }}>
+                <h4>Kupac: {order?.user.name}</h4>
+                <h4 className="mb-4">Ukupan iznos: {order?.total_amount.toFixed(2)} RSD</h4>
+                {/* <Container style={{ height: order && order?.invoiceItems.length >= 3 ? '500px' : '300px', width: '800px', overflowY: 'auto' }}>
                     <h4>Stavke:</h4>
                     <Table striped bordered hover>
                         <thead>
@@ -29,7 +29,7 @@ const InvoiceItemsModalTable: React.FC<InvoiceItemsModalTableProps> = ({ invoice
                                 <th>Ukupna cena</th>
                             </tr>
                         </thead>
-                        {invoice &&
+                        {order &&
                             <tbody>
                                 {invoice.invoiceItems.map((invoiceItem, i) => (
                                     <tr key={invoiceItem.invoiceItemId}>
@@ -44,10 +44,10 @@ const InvoiceItemsModalTable: React.FC<InvoiceItemsModalTableProps> = ({ invoice
                             </tbody>
                         }
                     </Table>
-                </Container>
+                </Container> */}
             </Modal.Body>
         </Modal>
     )
 }
 
-export default InvoiceItemsModalTable
+export default OrderItemsModalTable

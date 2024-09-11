@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Form, Button, FormControl, Dropdown } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-import { BookFormat } from '../types';
+import { Book } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface SearchComponentProps {
@@ -11,14 +11,14 @@ interface SearchComponentProps {
 
 const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [searchResults, setSearchResults] = useState<BookFormat[]>([]);
+    const [searchResults, setSearchResults] = useState<Book[]>([]);
     const [showResults, setShowResults] = useState<boolean>(false);
     const [inputWidth, setInputWidth] = useState<number>(0);
     const navigate = useNavigate()
 
     useEffect(() => {
         if (searchTerm.length > 2) {
-            axios.get<BookFormat[]>(`http://localhost:8080/api/book-formats/search?query=${searchTerm}`)
+            axios.get<Book[]>(`http://localhost:8080/api/book-formats/search?query=${searchTerm}`)
                 .then(response => {
                     setSearchResults(response.data.slice(0, 5)); // Limit to 5 results
                     setShowResults(true);
@@ -116,8 +116,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                     {searchResults.length > 0 ? (
                         searchResults.map((result) => (
                             <Dropdown.Item
-                                key={result.bookFormatId}
-                                onClick={() => handleViewBook(result.bookFormatId)}
+                                key={result.id}
+                                onClick={() => handleViewBook(result.id)}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -127,8 +127,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                                 }}
                             >
                                 <img
-                                    src={`http://localhost:8080/${result.coverImagePath}`} // Assuming coverImagePath is the URL of the image
-                                    alt={result.book.title}
+                                    src={`http://localhost:8080/${result.cover_image_path}`} // Assuming coverImagePath is the URL of the image
+                                    alt={result.title}
                                     style={{
                                         width: '50px',
                                         height: '75px',
@@ -137,9 +137,9 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                                     }}
                                 />
                                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                    <strong style={{ overflowWrap: 'break-word' }}>{result.book.title}</strong>
+                                    <strong style={{ overflowWrap: 'break-word' }}>{result.title}</strong>
                                     <span style={{ overflowWrap: 'break-word' }}>
-                                        {result.book.author.fullName} - {result.price.toFixed(2)} RSD
+                                        {result.author.name} - {result.price.toFixed(2)} RSD
                                     </span>
                                 </div>
                             </Dropdown.Item>

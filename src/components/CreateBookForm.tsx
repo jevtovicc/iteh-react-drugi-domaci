@@ -61,8 +61,8 @@ const CreateBookForm: React.FC = () => {
         }) // Adjust the URL as needed
             .then(response => {
                 setAuthors(response.data.map(author => ({
-                    value: author.authorId,
-                    label: author.fullName
+                    value: author.id,
+                    label: author.name
                 })));
             })
             .catch(error => {
@@ -74,8 +74,8 @@ const CreateBookForm: React.FC = () => {
         }) // Adjust the URL as needed
             .then(response => {
                 setPublishers(response.data.map(publisher => ({
-                    value: publisher.publisherId,
-                    label: publisher.publisherName
+                    value: publisher.id,
+                    label: publisher.name
                 })));
             })
             .catch(error => {
