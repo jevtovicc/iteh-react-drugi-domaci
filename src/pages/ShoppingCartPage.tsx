@@ -2,9 +2,11 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import ShoppingCartTable from "../components/ShoppingCartTable";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const ShoppingCartPage: React.FC = () => {
     const { cart, clearCart } = useCart();
+    const { isAuthenticated } = useAuth()
 
     const handleCheckout = () => {
         // Transform the cart array into the desired format
@@ -61,6 +63,7 @@ const ShoppingCartPage: React.FC = () => {
                                     <Button
                                         variant="primary"
                                         onClick={handleCheckout}
+                                        disabled={!isAuthenticated}
                                     >
                                         Kupi
                                     </Button>
