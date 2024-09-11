@@ -8,13 +8,10 @@ import { jwtDecode } from "jwt-decode";
 
 
 interface LoginResponse {
-    token: string
+    access_token: string,
+    roles: string[]
 }
 
-interface DecodedToken {
-    sub: string;
-    roles: string[];
-}
 
 const LoginForm: React.FC = () => {
 
@@ -22,7 +19,7 @@ const LoginForm: React.FC = () => {
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: ''
     });
 
@@ -37,19 +34,17 @@ const LoginForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        axios.post<LoginResponse>('http://localhost:8080/login', formData)
+        axios.post<LoginResponse>('http://127.0.0.1:8000/api/login', formData)
             .then(response => {
-                const { token } = response.data
-                localStorage.setItem('token', token);
+                const { access_token, roles } = response.data
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('roles', JSON.stringify(roles))
                 setIsAuthenticated(true)
 
-                const decodedToken = jwtDecode<DecodedToken>(token);
-                const roles = decodedToken.roles || [];
-
-                if (roles.includes('ROLE_ADMIN')) {
+                if (roles.includes('admin')) {
                     setIsAdmin(true)
                     navigate('/admin');
-                } else if (roles.includes('ROLE_CUSTOMER')) {
+                } else if (roles.includes('customer')) {
                     setIsAdmin(false)
                 } else {
                     navigate('/'); // Fallback or default page
@@ -61,11 +56,11 @@ const LoginForm: React.FC = () => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group>
-                <Form.Label>Korisnicko ime</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
-                    type="text"
-                    name="username"
-                    value={formData.username}
+                    type="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
                 />

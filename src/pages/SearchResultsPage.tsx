@@ -16,7 +16,7 @@ const SearchResultsPage: React.FC = () => {
 
         if (query) {
             setSearchTerm(query);
-            axios.get<Book[]>(`http://localhost:8080/api/book-formats/search?query=${query}`)
+            axios.get<Book[]>(`http://127.0.0.1:8000/api/books/search?query=${query}`)
                 .then(response => setSearchResults(response.data))
                 .catch(error => console.error(error));
         }

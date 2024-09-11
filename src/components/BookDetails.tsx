@@ -58,7 +58,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
                             {book.genres.map((genre) => (
                                 <Link
                                     key={genre.id}
-                                    to={`/books/genres/${genre.id}`}
+                                    to={`/books/genres?genreId=${genre.id}`}
                                     style={{ marginRight: '10px', textDecoration: 'none', color: '#007bff' }}
                                 >
                                     {genre.name}

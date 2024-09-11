@@ -7,19 +7,32 @@ const ShoppingCartPage: React.FC = () => {
     const { cart, clearCart } = useCart();
 
     const handleCheckout = () => {
-        const bookFormatQuantities = cart.reduce((map, item) => {
-            map[item.id] = item.quantity;
-            return map;
-        }, {} as { [key: string]: number });
+        // Transform the cart array into the desired format
+        const items = cart.map(item => ({
+            book_id: item.id,  // Assuming `id` in cart items is book_id
+            quantity: item.quantity
+        }));
 
         const data = {
-            "memberId": 1,
-            "bookFormatQuantities": bookFormatQuantities
+            items
         };
 
-        axios.post('http://localhost:8080/api/invoices', data)
+        // Get token from local storage
+        const token = localStorage.getItem('token'); // Adjust the key if necessary
+
+        // Check if token is available
+        if (!token) {
+            alert('No token found. Please log in.');
+            return;
+        }
+
+        axios.post('http://127.0.0.1:8000/api/orders', data, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+            }
+        })
             .then(response => {
-                alert('Invoice created');
+                alert('Order created');
                 clearCart();
             })
             .catch(e => console.log(e));

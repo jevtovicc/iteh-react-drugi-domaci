@@ -15,7 +15,7 @@ const AuthorPage: React.FC = () => {
     useEffect(() => {
         // Fetch book formats based on selected author ID
         if (selectedAuthorID) {
-            axios.get<Book[]>(`http://localhost:8080/api/book-formats/authors?authorId=${selectedAuthorID}`)
+            axios.get<Book[]>(`http://127.0.0.1:8000/api/authors/${selectedAuthorID}/books`)
                 .then(response => setBooks(response.data))
                 .catch(e => console.log(e));
         }

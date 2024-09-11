@@ -18,7 +18,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
 
     useEffect(() => {
         if (searchTerm.length > 2) {
-            axios.get<Book[]>(`http://localhost:8080/api/book-formats/search?query=${searchTerm}`)
+            axios.get<Book[]>(`http://127.0.0.1:8000/api/books/search?query=${searchTerm}`)
                 .then(response => {
                     setSearchResults(response.data.slice(0, 5)); // Limit to 5 results
                     setShowResults(true);
@@ -127,7 +127,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                                 }}
                             >
                                 <img
-                                    src={`http://localhost:8080/${result.cover_image_path}`} // Assuming coverImagePath is the URL of the image
+                                    src={`http://127.0.0.1:8000/${result.cover_image_path}`}
                                     alt={result.title}
                                     style={{
                                         width: '50px',
@@ -139,7 +139,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
                                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                     <strong style={{ overflowWrap: 'break-word' }}>{result.title}</strong>
                                     <span style={{ overflowWrap: 'break-word' }}>
-                                        {result.author.name} - {result.price.toFixed(2)} RSD
+                                        {result.author.name} - {result.price} RSD
                                     </span>
                                 </div>
                             </Dropdown.Item>

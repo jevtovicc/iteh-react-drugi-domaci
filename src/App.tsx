@@ -18,7 +18,6 @@ import BookDetailsPage from './pages/BookDetailsPage';
 import AuthorPage from './pages/AuthorPage';
 
 interface DecodedToken {
-  sub: string[];
   roles: string[];
 }
 
@@ -47,9 +46,9 @@ const App: React.FC = () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decodedToken = jwtDecode<DecodedToken>(token);
-        const roles = decodedToken.roles || [];
-        setIsAdmin(roles.includes('ROLE_ADMIN'));
+        const rolesString = localStorage.getItem('roles');
+        const roles: string[] = rolesString ? JSON.parse(rolesString) : [];
+        setIsAdmin(roles.includes('admin'));
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Error decoding token:', error);
