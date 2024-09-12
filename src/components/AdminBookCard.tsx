@@ -10,7 +10,7 @@ const AdminBookCard: React.FC<BookCardProps> = ({ book }) => {
 
     return (
         <Card style={{ width: '12rem', padding: '20px' }}>
-            <Card.Img variant="top" src={`http://localhost:8080/${book.cover_image_path}`} />
+            <Card.Img variant="top" src={`http://127.0.0.1:8000/${book.cover_image_path}`} />
             <Card.Body>
                 <Card.Title>{book.title}</Card.Title>
                 <Card.Text>{book.author.name}</Card.Text>
