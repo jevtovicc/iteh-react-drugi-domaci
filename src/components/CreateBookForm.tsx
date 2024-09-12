@@ -56,7 +56,7 @@ const CreateBookForm: React.FC = () => {
 
     useEffect(() => {
         // Fetch authors from the API
-        axios.get<Author[]>('http://localhost:8080/api/authors', {
+        axios.get<Author[]>('http://127.0.0.1:8000/api/authors', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         }) // Adjust the URL as needed
             .then(response => {
@@ -69,7 +69,7 @@ const CreateBookForm: React.FC = () => {
                 console.error('Error fetching authors', error);
             });
 
-        axios.get<Publisher[]>('http://localhost:8080/api/publishers', {
+        axios.get<Publisher[]>('http://127.0.0.1:8000/api/publishers', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         }) // Adjust the URL as needed
             .then(response => {
@@ -83,7 +83,7 @@ const CreateBookForm: React.FC = () => {
             });
 
 
-        axios.get<Genre[]>('http://localhost:8080/api/genres') // Adjust the URL as needed
+        axios.get<Genre[]>('http://127.0.0.1:8000/api/genres') // Adjust the URL as needed
             .then(response => {
                 setGenres(response.data)
             })
@@ -154,17 +154,23 @@ const CreateBookForm: React.FC = () => {
         dataToSend.append('image', imageFile);
         dataToSend.append('title', formData.title)
         dataToSend.append('description', formData.description)
-        dataToSend.append('pages', formData.pages.toString())
+        dataToSend.append('page_count', formData.pages.toString())
         dataToSend.append('price', formData.price.toString())
         dataToSend.append('isbn', formData.isbn)
         dataToSend.append('format', selectedFormat!.value.toString())
-        dataToSend.append('authorId', selectedAuthor!.value.toString())
-        dataToSend.append('publisherId', selectedPublisher!.value.toString())
+        dataToSend.append('author_id', selectedAuthor!.value.toString())
+        dataToSend.append('publisher_id', selectedPublisher!.value.toString())
+
+        // Add selected genres (tags)
+        selectedGenres.forEach((tag, index) => {
+            dataToSend.append(`genres[${index}]`, tag);
+        });
 
 
-        axios.post('http://localhost:8080/api/books', dataToSend, {
+        axios.post('http://127.0.0.1:8000/api/books', dataToSend, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         })
             .then(response => {
