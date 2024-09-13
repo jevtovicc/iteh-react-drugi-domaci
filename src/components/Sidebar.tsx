@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
                     {/* Order Management Section */}
                     <div>
                         <h5 className='text-secondary'>Order Management</h5>
-                        <Nav.Link as={Link} to='/admin/orders'>Porudžbine</Nav.Link>
+                        <Nav.Link as={Link} to='/admin/view-orders'>Porudžbine</Nav.Link>
                     </div>
                 </Nav>
             </Navbar.Collapse>

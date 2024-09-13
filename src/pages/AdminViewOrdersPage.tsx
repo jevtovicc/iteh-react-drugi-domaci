@@ -12,11 +12,11 @@ const AdminViewOrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/invoices', {
+        axios.get('http://127.0.0.1:8000/api/orders', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
-            .then(response => setOrders(response.data))
-            .catch(e => console.log('Error fetching invoices'))
+            .then(response => setOrders(response.data['orders']))
+            .catch(e => console.log('Error fetching orders'))
     }, [])
 
     return (
@@ -31,7 +31,7 @@ const AdminViewOrdersPage: React.FC = () => {
                         <div className="container mt-4">
                             <Row>
                                 <Col>
-                                    <h2>Pregled racuna</h2>
+                                    <h2>Pregled porudzbina</h2>
                                     <AdminOrdersTable orders={orders} />
                                 </Col>
                             </Row>

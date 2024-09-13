@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Image, Tabs, Tab, Button, ToastContainer, Toast } from 'react-bootstrap';
-import { Book } from '../types';
+import { Book, Store } from '../types';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
+import ReusableModal from './ReusableModal';
+import axios from 'axios';
 
 interface BookDetailsProps {
     book: Book | null;
@@ -15,7 +17,9 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     const [showToast, setShowToast] = useState(false);
     const [disableAddToCart, setDisableAddToCart] = useState(false);
     const [isHovered, setIsHovered] = useState(false); // Track hover state for author name
-    const navigate = useNavigate()
+    const [showStoreAvailabilityModal, setShowStoreAvailabilityModal] = useState(false);
+    const [stores, setStores] = useState<Store[]>([]); // State for stores
+    const navigate = useNavigate();
 
     if (!book) {
         return <p>Loading...</p>;
@@ -30,6 +34,17 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
             setShowToast(false);
             setDisableAddToCart(false); // Re-enable button after 3 seconds
         }, 3000);
+    };
+
+    const handleStoreAvailabilityClick = () => {
+        axios.get(`http://127.0.0.1:8000/api/books/${book.id}/stores`)
+            .then(response => {
+                setStores(response.data); // Update stores state with response data
+                setShowStoreAvailabilityModal(true); // Show the modal
+            })
+            .catch(error => {
+                console.error('Error fetching store availability', error);
+            });
     };
 
     const rowStyle = {
@@ -131,12 +146,28 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
                                 >
                                     {disableAddToCart ? 'Dodato' : 'Dodaj u korpu'} <FaShoppingCart />
                                 </Button>
-                                <p className='mt-3 text-primary' style={{ cursor: 'pointer' }}>Proveri dostupnost po knjižarama</p>
+                                <p
+                                    className='mt-3 text-primary' style={{ cursor: 'pointer' }}
+                                    onClick={handleStoreAvailabilityClick}
+                                >Proveri dostupnost po knjižarama</p>
                             </>
                             :
                             <p className='bg-warning p-2'><strong>Trenutno nije na stanju</strong></p>
                         }
                     </div>
+
+                    <ReusableModal
+                        show={showStoreAvailabilityModal}
+                        handleClose={() => setShowStoreAvailabilityModal(false)}
+                        title='Dostupnost'
+                        body={
+                            <ul>
+                                {stores.map((store) => (
+                                    <li key={store.id}>{store.name} - {store.location}</li>
+                                ))}
+                            </ul>
+                        }
+                    />
                 </Col>
             </Row>
 

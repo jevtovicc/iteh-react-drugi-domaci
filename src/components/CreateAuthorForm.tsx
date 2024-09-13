@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom";
 
 
 interface FormData {
-    fullName: string;
-    description: string;
+    name: string;
+    bio: string;
 }
 
 const CreateAuthorForm: React.FC = () => {
 
-    const [formData, setFormData] = useState<FormData>({ fullName: '', description: '' })
+    const [formData, setFormData] = useState<FormData>({ name: '', bio: '' })
+    const navigate = useNavigate()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -24,12 +26,16 @@ const CreateAuthorForm: React.FC = () => {
         e.preventDefault();
 
 
-        axios.post('http://localhost:8080/api/authors', formData)
+        axios.post('http://127.0.0.1:8000/api/authors', formData, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => {
-                alert('Author created successfully');
+                navigate('/admin/view-authors')
             })
             .catch(error => {
-                console.error('Error creating author', error);
+                alert('Error creating author: ' + error);
             });
     };
 
@@ -42,8 +48,8 @@ const CreateAuthorForm: React.FC = () => {
                 <Form.Label>Naziv</Form.Label>
                 <Form.Control
                     type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                 />
@@ -53,9 +59,9 @@ const CreateAuthorForm: React.FC = () => {
                 <Form.Label>Opis</Form.Label>
                 <Form.Control
                     as="textarea"
-                    name="description"
+                    name="bio"
                     rows={4}
-                    value={formData.description}
+                    value={formData.bio}
                     onChange={handleChange}
                     required
                 />

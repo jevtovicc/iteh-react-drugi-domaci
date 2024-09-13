@@ -15,7 +15,7 @@ const AdminViewAuthorsPage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/authors', {
+        axios.get('http://127.0.0.1:8000/api/authors', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
             .then(response => setAuthors(response.data))

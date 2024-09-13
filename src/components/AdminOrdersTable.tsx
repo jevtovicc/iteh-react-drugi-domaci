@@ -34,8 +34,9 @@ const AdminOrdersTable: React.FC<AdminOrdersTableProps> = ({ orders }) => {
                     {orders.map((order, i) => (
                         <tr key={order.id}>
                             <td>{i + 1}</td>
+                            <td>{order.id}</td>
                             <td>{order.user.name}</td>
-                            <td>{order.total_amount.toFixed(2)} RSD</td>
+                            <td>{order.total_amount} RSD</td>
                             <td>
                                 <Button onClick={() => handleShowOrderDetailsModal(order)}>
                                     Vidi detalje
