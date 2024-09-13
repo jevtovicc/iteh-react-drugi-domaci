@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, useRoutes, Navigate } from 'react-router-dom';
 import CreateBookPage from './pages/CreateBookPage';
 import NavBar from './components/NavBar';
@@ -18,11 +18,13 @@ import BookDetailsPage from './pages/BookDetailsPage';
 import AuthorPage from './pages/AuthorPage';
 import ViewOrdersPage from './pages/ViewOrdersPage';
 
-interface DecodedToken {
-  roles: string[];
-}
 
 const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
+
+  useEffect(() => {
+    console.log('Admin', isAdmin)
+  }, [isAdmin])
+
   const routes = [
     { path: "/admin/create-book", element: isAdmin ? <CreateBookPage /> : <Navigate to='/' /> },
     { path: "/admin/view-books", element: isAdmin ? <AdminViewBooksPage /> : <Navigate to='/' /> },
@@ -43,14 +45,18 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
 
 const App: React.FC = () => {
   const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin } = useAuth();
+  const [loadedAuthData, setLoadedAuthData] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const rolesString = localStorage.getItem('roles');
+        console.log(rolesString)
         const roles: string[] = rolesString ? JSON.parse(rolesString) : [];
+        console.log('Evo me u use effectu')
         setIsAdmin(roles.includes('admin'));
+        console.log('Admin?', roles.includes('admin'))
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Error decoding token:', error);
@@ -61,7 +67,9 @@ const App: React.FC = () => {
       setIsAdmin(false);
       setIsAuthenticated(false);
     }
-  }, [setIsAdmin, setIsAuthenticated]);
+
+    setLoadedAuthData(true)
+  }, [setIsAdmin, setIsAuthenticated, isAdmin, isAuthenticated]);
 
   if (isAdmin === null || isAuthenticated === null) {
     // Show a loading spinner or similar while fetching role
@@ -73,7 +81,7 @@ const App: React.FC = () => {
       <CartProvider>
         <div>
           {isAdmin ? <AdminNavbar /> : <NavBar />}
-          <AppRoutes isAdmin={isAdmin} />
+          {loadedAuthData && <AppRoutes isAdmin={isAdmin} />}
         </div>
       </CartProvider>
     </Router>

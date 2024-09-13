@@ -24,16 +24,12 @@ const AdminNavbar: React.FC = () => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className='p-2'>
+        <Navbar bg="light" variant="light" expand="lg" className='p-2'>
             <Container>
                 <div></div>
 
-                <Nav className="mx-auto">
-                    <SearchComponent onSearch={handleSearch} />
-                </Nav>
-
                 <Nav>
-                    <Nav.Link onClick={handleLogout} style={{ cursor: 'pointer' }} className='text-light'>
+                    <Nav.Link onClick={handleLogout} style={{ cursor: 'pointer' }}>
                         Odjavite se
                     </Nav.Link>
 

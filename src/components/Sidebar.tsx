@@ -9,8 +9,8 @@ const Sidebar: React.FC = () => {
 
     return (
         <Navbar
-            bg="dark"
-            variant="dark"
+            bg="light"
+            variant="light"
             className="sidebar d-flex flex-column p-3"
             style={{ width: '250px', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}
         >
