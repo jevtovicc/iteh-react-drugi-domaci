@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
-import { Author, Publisher, Genre } from '../types';
+import { Author, Publisher, Genre, Book } from '../types';
 import { ListGroup } from 'react-bootstrap';
 import TagModal from './TagModal';
 import { useNavigate } from 'react-router-dom';
@@ -35,29 +35,28 @@ const formatOptions: SelectOption[] = [
 
 const availableTags = ['Klasika', 'Trileri', 'Fikcija']
 
-const CreateBookForm: React.FC = () => {
+const EditBookForm: React.FC<{ book: Book }> = ({ book }) => {
 
     const [authors, setAuthors] = useState<SelectOption[]>([]);
-    const [selectedAuthor, setSelectedAuthor] = useState<SelectOption | null>(null);
+    const [selectedAuthor, setSelectedAuthor] = useState<SelectOption | null>({ value: book.author.id, label: book.author.name });
     const [publishers, setPublishers] = useState<SelectOption[]>([]);
-    const [selectedPublisher, setSelectedPublisher] = useState<SelectOption | null>(null);
+    const [selectedPublisher, setSelectedPublisher] = useState<SelectOption | null>({ value: book.publisher.id, label: book.publisher.name });
     const [genres, setGenres] = useState<Genre[]>([])
-    const [selectedFormat, setSelectedFormat] = useState<SelectOption | null>(null);
-    const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
-    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [selectedFormat, setSelectedFormat] = useState<SelectOption | null>({ value: book.format, label: book.format });
     const [showModal, setShowModal] = useState<boolean>(false);
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState<FormData>({
-        title: '',
-        description: '',
-        isbn: '',
-        pages: 0,
-        price: 0
+        title: book.title,
+        description: book.description,
+        isbn: book.isbn,
+        pages: book.page_count,
+        price: book.price
     });
 
     useEffect(() => {
+
         // Fetch authors from the API
         axios.get<Author[]>('http://127.0.0.1:8000/api/authors', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
@@ -97,24 +96,6 @@ const CreateBookForm: React.FC = () => {
 
     }, []);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-
-            // Check file type
-            if (!file.type.startsWith('image/')) {
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-                setImageFile(file);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -147,41 +128,23 @@ const CreateBookForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!imageFile) {
-            // Handle error for missing data
-            alert('Please fill out all fields and upload an image.');
-            return;
+        const dataToSend = {
+            ...formData,
+            author_id: selectedAuthor?.value,
+            publisher_id: selectedPublisher?.value
         }
 
-        const dataToSend = new FormData();
-        dataToSend.append('image', imageFile);
-        dataToSend.append('title', formData.title)
-        dataToSend.append('description', formData.description)
-        dataToSend.append('page_count', formData.pages.toString())
-        dataToSend.append('price', formData.price.toString())
-        dataToSend.append('isbn', formData.isbn)
-        dataToSend.append('format', selectedFormat!.value.toString())
-        dataToSend.append('author_id', selectedAuthor!.value.toString())
-        dataToSend.append('publisher_id', selectedPublisher!.value.toString())
-
-        // Add selected genres (tags)
-        selectedGenres.forEach((tag, index) => {
-            dataToSend.append(`genres[${index}]`, tag);
-        });
-
-
-        axios.post('http://127.0.0.1:8000/api/books', dataToSend, {
+        axios.put(`http://127.0.0.1:8000/api/books/${book.id}`, dataToSend, {
             headers: {
-                'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         })
             .then(response => {
-                toast.success('Knjiga uspesno kreirana');
+                toast.success('Knjiga uspesno izmenjena');
                 setTimeout(() => navigate('/admin/view-books'), 1000)
             })
             .catch(error => {
-                toast.error('Greska prilikom kreiranja knjige');
+                toast.error('Greska prilikom izmene knjige');
                 console.error('Error creating book', error);
             });
     };
@@ -320,26 +283,6 @@ const CreateBookForm: React.FC = () => {
                     </Row>
                 </Form.Group>
 
-                <Form.Group controlId="formImage" className="mb-3">
-                    <Form.Label>Dodaj sliku</Form.Label>
-                    <Form.Control
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                    />
-                </Form.Group>
-
-                {selectedImage && (
-                    <div className="mt-3">
-                        <Image
-                            src={selectedImage as string}
-                            alt="Selected"
-                            thumbnail
-                            style={{ maxWidth: '150px' }}
-                        />
-                    </div>
-                )}
-
                 <Container fluid>
                     <Row>
                         <Col style={{ display: 'flex', justifyContent: 'right' }}>
@@ -355,4 +298,4 @@ const CreateBookForm: React.FC = () => {
     );
 }
 
-export default CreateBookForm
+export default EditBookForm;

@@ -17,6 +17,7 @@ import SearchResultsPage from './pages/SearchResultsPage';
 import BookDetailsPage from './pages/BookDetailsPage';
 import AuthorPage from './pages/AuthorPage';
 import ViewOrdersPage from './pages/ViewOrdersPage';
+import EditBookPage from './pages/EditBookPage';
 
 
 const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
@@ -27,6 +28,7 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
 
   const routes = [
     { path: "/admin/create-book", element: isAdmin ? <CreateBookPage /> : <Navigate to='/' /> },
+    { path: "/admin/edit-book/:bookId", element: isAdmin ? <EditBookPage /> : <Navigate to='/' /> },
     { path: "/admin/view-books", element: isAdmin ? <AdminViewBooksPage /> : <Navigate to='/' /> },
     { path: "/admin/view-authors", element: isAdmin ? <AdminViewAuthorsPage /> : <Navigate to='/' /> },
     { path: "/admin/view-orders", element: isAdmin ? <AdminViewOrdersPage /> : <Navigate to='/' /> },
