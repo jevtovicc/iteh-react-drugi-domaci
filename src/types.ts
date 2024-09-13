@@ -33,8 +33,8 @@ export interface Book {
     publisher: Publisher;
     genres: Genre[];
     stores: Store[],
-    available: boolean;
     isbn: string;
+    total_stock: number;
 }
 
 export interface Genre {
@@ -47,6 +47,7 @@ export interface Order {
     status: string;
     total_amount: number;
     user: User
+    items: OrderItem[]
 }
 
 export interface OrderItem {

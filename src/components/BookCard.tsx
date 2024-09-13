@@ -63,7 +63,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                     </Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center mt-3" style={{ flex: '1 0 auto' }}>
                         <span className="text-primary">{book.price} RSD</span>
-                        {book.available ? (
+                        {book.total_stock > 0 ? (
                             <Button variant="outline-primary" onClick={handleAddToCart}>
                                 <FaShoppingCart />
                             </Button>

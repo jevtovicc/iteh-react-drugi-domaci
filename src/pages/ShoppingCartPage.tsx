@@ -65,7 +65,7 @@ const ShoppingCartPage: React.FC = () => {
                                         onClick={handleCheckout}
                                         disabled={!isAuthenticated}
                                     >
-                                        Kupi
+                                        {isAuthenticated ? 'Kupi' : 'Morate se prijaviti pre kupovine'}
                                     </Button>
                                 </>
                             )}

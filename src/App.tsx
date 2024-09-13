@@ -16,6 +16,7 @@ import AdminNavbar from './components/AdminNavbar';
 import SearchResultsPage from './pages/SearchResultsPage';
 import BookDetailsPage from './pages/BookDetailsPage';
 import AuthorPage from './pages/AuthorPage';
+import ViewOrdersPage from './pages/ViewOrdersPage';
 
 interface DecodedToken {
   roles: string[];
@@ -33,6 +34,7 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     { path: "/books/view-book/:bookId", element: <BookDetailsPage /> },
     { path: "/books/search", element: <SearchResultsPage /> },
     { path: "/authors/:authorId/books", element: <AuthorPage /> },
+    { path: "/view-orders", element: <ViewOrdersPage /> },
     { path: "/", element: <CustomerHomePage /> },
   ];
 

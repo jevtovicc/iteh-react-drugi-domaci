@@ -11,12 +11,10 @@ const OrderItemsModalTable: React.FC<OrderItemsModalTableProps> = ({ order, show
     return (
         <Modal show={show} onHide={onHide} size='xl'>
             <Modal.Header closeButton>
-                <Modal.Title>Detalji Racuna</Modal.Title>
+                <Modal.Title>Detalji porudžbine ({order?.id})</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4>Kupac: {order?.user.name}</h4>
-                <h4 className="mb-4">Ukupan iznos: {order?.total_amount.toFixed(2)} RSD</h4>
-                {/* <Container style={{ height: order && order?.invoiceItems.length >= 3 ? '500px' : '300px', width: '800px', overflowY: 'auto' }}>
+                <Container style={{ height: order && order?.items.length >= 3 ? '500px' : '300px', width: '800px', overflowY: 'auto' }}>
                     <h4>Stavke:</h4>
                     <Table striped bordered hover>
                         <thead>
@@ -31,20 +29,25 @@ const OrderItemsModalTable: React.FC<OrderItemsModalTableProps> = ({ order, show
                         </thead>
                         {order &&
                             <tbody>
-                                {invoice.invoiceItems.map((invoiceItem, i) => (
-                                    <tr key={invoiceItem.invoiceItemId}>
+                                {order.items.map((orderItem, i) => (
+                                    <tr key={orderItem.id}>
                                         <td>{i + 1}</td>
-                                        <td>{invoiceItem.bookCopy.bookFormat.book.title}</td>
-                                        <td>{invoiceItem.bookCopy.bookFormat.isbn}</td>
-                                        <td>{invoiceItem.bookCopy.bookFormat.price.toFixed(2)} RSD</td>
+                                        <td>{orderItem.book.title}</td>
+                                        <td>{orderItem.book.isbn}</td>
+                                        <td>{orderItem.book.price} RSD</td>
                                         <td>1</td>
-                                        <td>{invoiceItem.bookCopy.bookFormat.price.toFixed(2)}</td>
+                                        <td>{orderItem.book.price}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         }
                     </Table>
-                </Container> */}
+                </Container>
+                <Row className="justify-content-end">
+                    <Col xs="auto">
+                        <h5 className="mt-4 text-end">Ukupan iznos: {order?.total_amount} RSD</h5>
+                    </Col>
+                </Row>
             </Modal.Body>
         </Modal>
     )

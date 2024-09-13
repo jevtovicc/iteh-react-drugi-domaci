@@ -24,8 +24,7 @@ const RegistrationForm: React.FC = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        firstName: '',
-        lastName: ''
+        name: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,19 +38,20 @@ const RegistrationForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        axios.post<LoginResponse>('http://localhost:8080/login', formData)
+        axios.post('http://127.0.0.1:8000/api/register', formData)
             .then(response => {
-                const { token } = response.data
+                console.log(response.data)
+                const token = response.data['access_token']
                 localStorage.setItem('token', token);
                 setIsAuthenticated(true)
 
-                const decodedToken = jwtDecode<DecodedToken>(token);
-                const roles = decodedToken.roles || [];
+                const roles = response.data['roles']
+                localStorage.setItem('roles', JSON.stringify(roles));
 
-                if (roles.includes('ROLE_ADMIN')) {
+                if (roles.includes('admin')) {
                     setIsAdmin(true)
                     navigate('/admin');
-                } else if (roles.includes('ROLE_CUSTOMER')) {
+                } else if (roles.includes('customer')) {
                     setIsAdmin(false)
                 } else {
                     navigate('/'); // Fallback or default page
@@ -65,28 +65,15 @@ const RegistrationForm: React.FC = () => {
             <Form.Group>
                 <Row>
                     <Col>
-                        <Form.Label>Ime</Form.Label>
+                        <Form.Label>Ime i Prezime</Form.Label>
                         <Form.Control
                             type="text"
-                            name="firstName"
-                            value={formData.firstName}
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
                             required
                         />
                     </Col>
-
-                    <Col>
-
-                        <Form.Label>Prezime</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Col>
-
                 </Row>
             </Form.Group>
             <Form.Group>

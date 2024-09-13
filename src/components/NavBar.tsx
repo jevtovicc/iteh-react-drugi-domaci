@@ -93,6 +93,9 @@ const NavBar: React.FC = () => {
                                     </div>
                                 </Nav.Link>
                                 <NavDropdown title="Moj nalog" id="basic-nav-dropdown">
+                                    <NavDropdown.Item onClick={() => navigate('/view-orders')}>
+                                        Moje porudžbine
+                                    </NavDropdown.Item>
                                     <NavDropdown.Item onClick={handleLogout}>
                                         Odjavi se
                                     </NavDropdown.Item>

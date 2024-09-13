@@ -121,7 +121,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
                     <div className="text-center">
                         <h5 className=''>Cena:</h5>
                         <h5 className="text-danger mb-3"><strong>{book.price} RSD</strong></h5>
-                        {book.available ?
+                        {book.total_stock > 0 ?
                             <>
                                 <Button
                                     variant={disableAddToCart ? 'secondary' : 'outline-primary'}
