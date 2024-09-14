@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Image, Tabs, Tab, Button, ToastContainer, Toast } from 'react-bootstrap';
+import { Container, Row, Col, Image, Tabs, Tab, Button, ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Book, Store } from '../types';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
@@ -161,11 +161,15 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
                         handleClose={() => setShowStoreAvailabilityModal(false)}
                         title='Dostupnost'
                         body={
-                            <ul>
+                            <ListGroup>
                                 {stores.map((store) => (
-                                    <li key={store.id}>{store.name} - {store.location}</li>
+                                    <ListGroupItem
+                                        style={{ cursor: 'pointer' }}
+                                        key={store.id}
+                                        onClick={() => navigate(`/stores/${store.id}`)}
+                                    >{store.name} - {store.location}</ListGroupItem>
                                 ))}
-                            </ul>
+                            </ListGroup>
                         }
                     />
                 </Col>

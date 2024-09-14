@@ -18,7 +18,9 @@ import BookDetailsPage from './pages/BookDetailsPage';
 import AuthorPage from './pages/AuthorPage';
 import ViewOrdersPage from './pages/ViewOrdersPage';
 import EditBookPage from './pages/EditBookPage';
-
+import MapComponent from './pages/MapComponent';
+import MapPage from './pages/MapPage';
+import 'leaflet/dist/leaflet.css';
 
 const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
 
@@ -39,6 +41,9 @@ const AppRoutes: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     { path: "/books/search", element: <SearchResultsPage /> },
     { path: "/authors/:authorId/books", element: <AuthorPage /> },
     { path: "/view-orders", element: <ViewOrdersPage /> },
+    {
+      path: "/stores/:storeId", element: <MapPage />
+    },
     { path: "/", element: <CustomerHomePage /> },
   ];
 
